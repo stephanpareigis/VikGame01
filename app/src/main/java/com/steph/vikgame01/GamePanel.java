@@ -15,6 +15,7 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
     private MainThread thread;
     private LandscapeBackground landscapeBackground;
     private SpriteDiver spriteDiver;
+    private GameControl gameControl;
     private String text;
 
 
@@ -34,8 +35,9 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
    @Override
    public void surfaceCreated(SurfaceHolder holder){
         thread = new MainThread(getHolder(), this);
-       landscapeBackground = new LandscapeBackground(BitmapFactory.decodeResource(getResources(),R.drawable.oceanreef));
-       spriteDiver = new SpriteDiver(this,BitmapFactory.decodeResource(getResources(),R.drawable.herz));
+       gameControl = new GameControl(this);
+       landscapeBackground = new LandscapeBackground(this, gameControl, BitmapFactory.decodeResource(getResources(),R.drawable.meerhintergrund));
+       spriteDiver = new SpriteDiver(this, gameControl, BitmapFactory.decodeResource(getResources(),R.drawable.taucher));
 
 
         thread.setRunning(true);
@@ -61,13 +63,12 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
             case MotionEvent.ACTION_UP:
                 //When the user presses on the screen
                 //we will do something here
-//                spriteDiver.turbo();
                 break;
             case MotionEvent.ACTION_DOWN:
                 //When the user releases the screen
                 //do something here
                 text = "x=" + motionEvent.getX()+" y="+motionEvent.getY();
-                spriteDiver.turbo((int) motionEvent.getX(), (int) motionEvent.getY());
+                gameControl.movement((int) motionEvent.getX(), (int) motionEvent.getY());
                 break;
         }
         return true;
@@ -75,6 +76,8 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
 
    public void update(){
         landscapeBackground.update();
+        spriteDiver.update();
+       gameControl.update();
    }
 
 
@@ -82,9 +85,10 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
     public void draw(Canvas canvas) {
        super.draw(canvas);
        if (canvas != null) {
- //          canvas.drawColor(Color.WHITE);
-           landscapeBackground.draw(canvas);
+           landscapeBackground.onDraw(canvas);
            spriteDiver.onDraw(canvas);
+
+           //draw Text for Test
            Paint paint = new Paint();
            paint.setTextSize(70);
            paint.setColor(Color.MAGENTA);

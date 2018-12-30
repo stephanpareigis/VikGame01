@@ -15,28 +15,30 @@ public class SpriteDiver {
     private int ySpeed = 2;
     private int xacc = 0;
     private int yacc = 0;
-    private GamePanel gameView;
+    private GamePanel gamePanel;
+    private GameControl gameControl;
     private Bitmap bmp;
     private int currentFrame = 0;
     private int width;
     private int height;
 
-    public SpriteDiver(GamePanel  gameView, Bitmap bmp) {
-        this.gameView = gameView;
+    public SpriteDiver(GamePanel gamePanel, GameControl gameControl, Bitmap bmp) {
+        this.gamePanel = gamePanel;
+        this.gameControl = gameControl;
         this.bmp = bmp;
         this.width = bmp.getWidth() / BMP_COLUMNS;
         this.height = bmp.getHeight() / BMP_ROWS;
     }
 
-    private void update() {
+    public void update() {
         xSpeed += xacc;
         ySpeed += yacc;
-        if (x >= gameView.getWidth() - width - xSpeed || x + xSpeed <= 0) {
+        if (x >= gamePanel.getWidth() - width - xSpeed || x + xSpeed <= 0) {
             xSpeed = -xSpeed;
             xacc = -xacc;
         }
         x = x + xSpeed;
-        if (y >= gameView.getHeight() - height - ySpeed || y + ySpeed <= 0) {
+        if (y >= gamePanel.getHeight() - height - ySpeed || y + ySpeed <= 0) {
             ySpeed = -ySpeed;
             yacc = -yacc;
         }
@@ -49,18 +51,16 @@ public class SpriteDiver {
         if ( yacc < 0 ) yacc += 1;
     }
 
-    public void turbo(int valuex, int valuey){
-        xacc += (valuex - 500)/100;
-        yacc += (valuey -900)/200;
-    }
-
     public void onDraw(Canvas canvas) {
-        update();
-        int srcX = currentFrame * width;
-        int srcY = getAnimationRow() * height;
-        Rect src = new Rect(srcX, srcY, srcX + width, srcY + height);
-        Rect dst = new Rect(x, y, x + width, y + height);
-        canvas.drawBitmap(bmp, src, dst, null);
+ //       int srcX = currentFrame * width;
+ //       int srcY = getAnimationRow() * height;
+ //       Rect src = new Rect(srcX, srcY, srcX + width, srcY + height);
+ //       Rect dst = new Rect(x, y, x + width, y + height);
+      //  canvas.drawBitmap(bmp, src, dst, null);
+        int drawy = gameControl.y;
+        if ( gameControl.y >= gameControl.ylimit) drawy = gameControl.ylimit;
+        canvas.drawBitmap(bmp,gameControl.x,drawy,null);
+       //       canvas.drawBitmap(bmp,300,500,null);
     }
 
     // direction = 0 up, 1 left, 2 down, 3 right,
