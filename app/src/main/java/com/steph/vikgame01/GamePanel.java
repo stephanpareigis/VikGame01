@@ -24,6 +24,7 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
         getHolder().addCallback(this);
         thread = new MainThread(getHolder(), this);
         setFocusable(true);
+        text = new String();
     }
 
     @Override
@@ -37,7 +38,7 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
         thread = new MainThread(getHolder(), this);
        gameControl = new GameControl(this);
        landscapeBackground = new LandscapeBackground(this, gameControl, BitmapFactory.decodeResource(getResources(),R.drawable.meerhintergrund));
-       spriteDiver = new SpriteDiver(this, gameControl, BitmapFactory.decodeResource(getResources(),R.drawable.taucher));
+       spriteDiver = new SpriteDiver(this, gameControl, landscapeBackground, BitmapFactory.decodeResource(getResources(),R.drawable.taucherspritesheet));
 
 
         thread.setRunning(true);
@@ -67,8 +68,8 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
             case MotionEvent.ACTION_DOWN:
                 //When the user releases the screen
                 //do something here
-                text = "x=" + motionEvent.getX()+" y="+motionEvent.getY();
-                gameControl.movement((int) motionEvent.getX(), (int) motionEvent.getY());
+                text = "x=" + ((int) motionEvent.getX() - getWidth()/2) ;
+                gameControl.movement( motionEvent.getX() - getWidth()/2,  motionEvent.getY() - getHeight()/2);
                 break;
         }
         return true;
@@ -77,7 +78,7 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
    public void update(){
         landscapeBackground.update();
         spriteDiver.update();
-       gameControl.update();
+        gameControl.update();
    }
 
 
