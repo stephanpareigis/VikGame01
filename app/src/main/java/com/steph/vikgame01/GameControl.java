@@ -1,49 +1,60 @@
 package com.steph.vikgame01;
 
 public class GameControl {
-    public int x;
-    public int y;
-    public int vx;
-    public int vy;
-    public int ax;
-    public int ay;
-    public final int ylimit = 1300;
+    public float x;
+    public float y;
+    public float vx;
+    public float vy;
+    public float ax;
+    public float ay;
+    public float poolDepth; // size of pool
+    public float poolWidth; // size of pool
+    public float visibleDepth; // depicted depth
+    public float visibleWidth; // depicted width
+    public  float depthLimit; // should be smaller than visibleDepth
+    public float  widthLimit; // when to scroll when diver is at the side
+    public float diverMaxDepth; // at this depth the diver returns upwards
     private GamePanel gamePanel;
 
 
     GameControl(GamePanel gamePanel){
-        x = 540;
-        y = 0;
+        // state of diver
+        x = 0; // 0 is the middle
+        y = 0; // depth
         vx = 0;
-        vy = 0;
+        vy = 2;
         ax = 0;
         ay = 0;
+        visibleDepth = 250;
+        visibleWidth = 100;
+        // depth and width where background starts to move
+        depthLimit = 100;
+        widthLimit = 50;
+        // size of pool
+        poolDepth = 400;
+        poolWidth = 170;
+        diverMaxDepth = 350;
+
         this.gamePanel = gamePanel;
     }
 
-    public void movement(int x, int y){
-        ax += (x - 500)/200;
-        ay += (y - 900)/300;
+    public void movement(float x, float y){
+        ax += (x / 500);
     }
 
     public void update(){
         vx += ax;
-        vy += ay;
-        if (x >= gamePanel.getWidth()  - vx || x + vx <= 0) {
-            vx = -vx;
-            ax = -ax;
+        if ((x >= poolWidth/2 - visibleWidth/2 - vx && vx > 0) || (x<= -poolWidth/2 + visibleWidth/2 - vx && vx <0)) {
+            vx = -vx*4/5;
+            ax = -ax/2;
         }
         x = x + vx;
-        if (y >= 5*gamePanel.getHeight()  - vy || y + vy <= 0) {
-            vy = 0;
-            ay = 0;
+        if (y >= diverMaxDepth  || y + vy <= 0) {
+            vy = -vy;
         }
         y = y + vy;
         //Reibung
-        if ( ax > 0 ) ax -= 1;
-        if ( ax < 0 ) ax += 1;
-        if ( ay > 0 ) ay -= 1;
-        if ( ay < 0 ) ay += 1;
-
+        ax /= 2;
+        vx *= 0.8;
     }
 }
