@@ -14,8 +14,8 @@ public class SpriteDiver {
     private GameControl gameControl;
     private Bitmap bmp;
     private int currentFrame = 0;
-    private int width;
-    private int height;
+    private float width;
+    private float height;
 
     public SpriteDiver(GamePanel gamePanel, GameControl gameControl, LandscapeBackground landscapeBackground, Bitmap bmp) {
         this.gamePanel = gamePanel;
@@ -36,8 +36,10 @@ public class SpriteDiver {
         int srcY = 0;
         float drawy = gameControl.y;
         if ( gameControl.y >= gameControl.depthLimit) drawy = gameControl.depthLimit;
-        Rect src = new Rect((int)srcX, srcY, (int)srcX + width, srcY + height);
-        Rect dst = new Rect(landscapeBackground.pool2ImageX(gameControl.x), landscapeBackground.pool2ImageY(drawy), landscapeBackground.pool2ImageX(gameControl.x) + width, landscapeBackground.pool2ImageY(drawy )+ height);
+        float destX = landscapeBackground.pool2ImageX(gameControl.x);
+        float destY = landscapeBackground.pool2ImageY(drawy);
+        Rect src = new Rect((int)srcX, srcY, (int)(srcX + width), (int)(srcY + height));
+        Rect dst = new Rect((int)destX,(int)destY,(int)(destX + width/height*gameControl.diverSize),(int)(destY+gameControl.diverSize));
         canvas.drawBitmap(bmp, src, dst, null);
 
  //       int drawy = gameControl.y;
