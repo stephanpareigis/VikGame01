@@ -16,6 +16,7 @@ public class SpriteDiver {
     private int currentFrame = 0;
     private float width;
     private float height;
+    private Rect src,dst;
 
     public SpriteDiver(GamePanel gamePanel, GameControl gameControl, LandscapeBackground landscapeBackground, Bitmap bmp) {
         this.gamePanel = gamePanel;
@@ -24,6 +25,8 @@ public class SpriteDiver {
         this.bmp = bmp;
         this.width = bmp.getWidth() / BMP_COLUMNS;
         this.height = bmp.getHeight() / BMP_ROWS;
+        this.dst = new Rect();
+        this.src = new Rect();
     }
 
     public void update() {
@@ -34,18 +37,31 @@ public class SpriteDiver {
         float srcX = currentFrame * width;
  //       int srcY = getAnimationRow() * height;
         int srcY = 0;
-        float drawy = gameControl.y;
-        if ( gameControl.y >= gameControl.depthLimit) drawy = gameControl.depthLimit;
-        float destX = landscapeBackground.pool2ImageX(gameControl.x);
-        float destY = landscapeBackground.pool2ImageY(drawy);
-        Rect src = new Rect((int)srcX, srcY, (int)(srcX + width), (int)(srcY + height));
-        Rect dst = new Rect((int)destX,(int)destY,(int)(destX + width/height*gameControl.diverSize),(int)(destY+gameControl.diverSize));
+        src.set((int)srcX, srcY, (int)(srcX + width), (int)(srcY + height));
+        // calculate destination rectangle
+        int left, top, right, bottom;
+        left = visible2ScreenX(gameControl.x );
+        top = visible2ScreenY(gameControl.y );
+        right = visible2ScreenX(gameControl.x + (width/height)*gameControl.diverSize );
+        bottom = visible2ScreenY(gameControl.y + gameControl.diverSize );
+        dst.set(left, top, right, bottom);
         canvas.drawBitmap(bmp, src, dst, null);
+   }
 
- //       int drawy = gameControl.y;
- //       if ( gameControl.y >= gameControl.depthLimit) drawy = gameControl.depthLimit;
- //       canvas.drawBitmap(bmp,gameControl.x,drawy,null);
-       //       canvas.drawBitmap(bmp,300,500,null);
+    // input shall be gameControl.x . Returns x position in screen
+    private int visible2ScreenX(float x){
+        float tmp, m, b;
+        m = gamePanel.getWidth() / gameControl.visibleWidth;
+        b = gamePanel.getWidth() / 2;
+        tmp = m*(x-gameControl.visibleX) + b;
+        return (int)tmp;
+    }
+    // input shall be y . Returns y position in screen.
+    private int visible2ScreenY(float y){
+        float tmp, m;
+        m = gamePanel.getHeight() / gameControl.visibleDepth;
+        tmp = m*(y-gameControl.visibleY);
+        return (int)tmp;
     }
 
     // direction = 0 up, 1 left, 2 down, 3 right,

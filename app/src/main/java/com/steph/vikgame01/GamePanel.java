@@ -64,6 +64,7 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
             case MotionEvent.ACTION_UP:
                 //When the user presses on the screen
                 //we will do something here
+                gameControl.movement(0,0);
                 break;
             case MotionEvent.ACTION_MOVE:
                 text = "buttonpress";
@@ -98,7 +99,7 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
            paint.setTextSize(100);
            paint.setColor(Color.MAGENTA);
 //           canvas.drawText(text,20,100,paint);
-           canvas.drawText(gameControl.depthText,getWidth()/4,9*getHeight()/10,paint);
+           canvas.drawText(gameControl.depthText,3*getWidth()/7,getHeight()/10,paint);
        }
    }
 
