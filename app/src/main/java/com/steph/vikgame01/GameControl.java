@@ -1,20 +1,25 @@
 package com.steph.vikgame01;
 
 public class GameControl {
+    // Position of Diver
     public float x;
     public float y;
+    // Velocity of diver
     public float vx;
     public float vy;
+    // acceleration of diver
     public float ax;
     public float ay;
+    // visible part of pool
     public float visibleX; // this is the upper middle of
     public float visibleY; // the visible part of the pool in pool-coordinates
-    public final float poolDepth; // size of pool
-    public final float poolWidth; // size of pool
     public final float visibleDepth; // depicted depth
     public final float visibleWidth; // depicted width
     public final float visibleDepthLimit; // should be smaller than visibleDepth
     public final float visibleWidthLimit; // when to scroll when diver is at the side
+    // pool size
+    public final float poolDepth; // size of pool
+    public final float poolWidth; // size of pool
     public final float diverMaxDepth; // at this depth the diver returns upwards
     public final float diverSize; // size of the diver.
     public String depthText; // depth to be displayed
@@ -29,6 +34,7 @@ public class GameControl {
         vy = (float)0.3;
         ax = 0;
         ay = 0;
+
 
         visibleDepth = 15; // size of visible rectangle. should be less than size of pool.
         visibleWidth = 7;

@@ -16,6 +16,8 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
     private LandscapeBackground landscapeBackground;
     private SpriteDiver spriteDiver;
     private GameControl gameControl;
+    private SeaObject turtle;
+    private SeaObject nemo;
     private String text;
 
 
@@ -35,10 +37,13 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
 
    @Override
    public void surfaceCreated(SurfaceHolder holder){
-        thread = new MainThread(getHolder(), this);
+       thread = new MainThread(getHolder(), this);
        gameControl = new GameControl(this);
        landscapeBackground = new LandscapeBackground(this, gameControl, BitmapFactory.decodeResource(getResources(),R.drawable.meerhintergrund));
        spriteDiver = new SpriteDiver(this, gameControl, landscapeBackground, BitmapFactory.decodeResource(getResources(),R.drawable.taucherspritesheet));
+       turtle = new SeaObject(0,8,this, gameControl, landscapeBackground, BitmapFactory.decodeResource(getResources(),R.drawable.herz));
+       nemo = new SeaObject(-3,12,this, gameControl, landscapeBackground, BitmapFactory.decodeResource(getResources(),R.drawable.nemo));
+
 
 
         thread.setRunning(true);
@@ -83,6 +88,8 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
    public void update(){
         landscapeBackground.update();
         spriteDiver.update();
+        nemo.update();
+        turtle.update();
         gameControl.update();
    }
 
@@ -92,6 +99,8 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
        super.draw(canvas);
        if (canvas != null) {
            landscapeBackground.onDraw(canvas);
+           turtle.onDraw(canvas);
+           nemo.onDraw(canvas);
            spriteDiver.onDraw(canvas);
 
            //draw Text for Test
