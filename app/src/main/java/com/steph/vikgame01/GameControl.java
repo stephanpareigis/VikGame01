@@ -26,20 +26,20 @@ public class GameControl {
         x = 0; // 0 is the middle
         y = 0; // depth
         vx = 0;
-        vy = (float)0.5;
+        vy = (float)0.3;
         ax = 0;
         ay = 0;
 
-        visibleDepth = 25; // size of visible rectangle. should be less than size of pool.
-        visibleWidth = 11;
+        visibleDepth = 15; // size of visible rectangle. should be less than size of pool.
+        visibleWidth = 7;
         visibleX = x; // position of visible rectangle in
         visibleY = y; //  pool coordinates
-        visibleDepthLimit = 20; // depth of visible rectangle where background starts to move. should be less than visibleDepth
+        visibleDepthLimit = 8; // depth of visible rectangle where background starts to move. should be less than visibleDepth
         visibleWidthLimit = 2; // width where visible rectangle starts to move. should be less than half of visibleWidth
         // size of pool
-        poolDepth = 80;
-        poolWidth = 35;
-        diverMaxDepth = 78; // here the diver goes back up
+        poolDepth = 30;
+        poolWidth = 14;
+        diverMaxDepth = 28; // here the diver goes back up
         diverSize = 2;
         depthText = new String();
         this.gamePanel = gamePanel;
